@@ -41,10 +41,28 @@ public:
       uint8_t numberOfPixels,
       KnobState &knobState);
 
+  static void quadPixelsRotate(
+      Adafruit_NeoPixel *neoPixels,
+      uint8_t numberOfPixels,
+      KnobState &knobState,
+      AnimationState &animationState);
+
+  static void quadPixelsRotateFader(
+      Adafruit_NeoPixel *neoPixels,
+      uint8_t numberOfPixels,
+      KnobState &knobState,
+      AnimationState &animationState);
+
   static void halves(
       Adafruit_NeoPixel *neoPixels,
       uint8_t numberOfPixels,
       KnobState &knobState);
+
+  static void halvesRotate(
+      Adafruit_NeoPixel *neoPixels,
+      uint8_t numberOfPixels,
+      KnobState &knobState,
+      AnimationState &animationState);
 
   static uint32_t getColor(
       Adafruit_NeoPixel *neoPixels,

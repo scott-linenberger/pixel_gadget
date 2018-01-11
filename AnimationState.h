@@ -4,43 +4,94 @@
 /* bring in the Arduino-y goodness */
 #include <Arduino.h>
 
-class AnimationState {
-  /* delays */
-  uint16_t delay1InMs;
-  uint16_t delay2InMs;
-  
-  /* timeMarks */
-  unsigned long timeMark1;
-  unsigned long timeMark2;
-  
-  /* ints */
-  uint32_t int1 = 0;
-  uint32_t int2 = 0;
+class AnimationState
+{
+  /* number of pixels */
+  uint8_t numberOfPixels;
 
-  public:
+  /* delays */
+  uint16_t delayPosition1 = 0;
+  uint16_t delayPosition2 = 0;
+  uint16_t delayPosition3 = 0;
+  uint16_t delayPosition4 = 0;
+
+  uint16_t delayColor1 = 0;
+  uint16_t delayColor2 = 0;
+  uint16_t delayColor3 = 0;
+  uint16_t delayColor4 = 0;
+
+  /* timeMarks */
+  unsigned long timeMarkColor1 = 0;
+  unsigned long timeMarkColor2 = 0;
+  unsigned long timeMarkColor3 = 0;
+  unsigned long timeMarkColor4 = 0;
+
+  unsigned long timeMarkPosition1 = 0;
+  unsigned long timeMarkPosition2 = 0;
+  unsigned long timeMarkPosition3 = 0;
+  unsigned long timeMarkPosition4 = 0;
+
+  /* position values */
+  uint8_t position1 = 0;
+  uint8_t position2 = 0;
+  uint8_t position3 = 0;
+  uint8_t position4 = 0;
+
+  /* color values */
+  uint8_t color1 = 0;
+  uint8_t color2 = 0;
+  uint8_t color3 = 0;
+  uint8_t color4 = 0;
+
+public:
   AnimationState();
+  void setNumberOfPixels(uint8_t _numberOfPixels);
   void reset();
 
-  void markTime1();
-  void markTime2();
+  /* position tickers */
+  void tickPosition1();
+  void tickPosition2();
+  void tickPosition3();
+  void tickPosition4();
 
-  boolean hasTimedOut1();
-  boolean hasTimedOut2();
+  /* color tickers */
+  void tickColor1();
+  void tickColor2();
+  void tickColor3();
+  void tickColor4();
 
-  void setDelay1InMs(uint16_t delayInMs);
-  void setDelay2InMs(uint16_t delayInMs);
+  /* delays */
+  void setDelayPosition1(uint16_t delayValue);
+  void setDelayPosition2(uint16_t delayValue);
+  void setDelayPosition3(uint16_t delayValue);
+  void setDelayPosition4(uint16_t delayValue);
 
-  uint32_t getInt1();
-  uint32_t getInt2();
+  void setDelayColor1(uint16_t delayValue);
+  void setDelayColor2(uint16_t delayValue);
+  void setDelayColor3(uint16_t delayValue);
+  void setDelayColor4(uint16_t delayValue);
 
-  void setInt1(uint32_t value);
-  void setInt2(uint32_t value);
+  /* getters */
+  uint8_t getColor1();
+  uint8_t getColor2();
+  uint8_t getColor3();
+  uint8_t getColor4();
 
-  void incrementInt1();
-  void incrementInt2();
-  
-  void decrementInt1();
-  void decrementInt2();
+  uint8_t getPosition1();
+  uint8_t getPosition2();
+  uint8_t getPosition3();
+  uint8_t getPosition4();
+
+private:
+  void tickPosition(
+      unsigned long &timeMark,
+      uint16_t delayTime,
+      uint8_t &position);
+
+  void tickColor(
+      unsigned long &timeMark,
+      uint16_t delayTime,
+      uint8_t &color);
 };
 
 #endif

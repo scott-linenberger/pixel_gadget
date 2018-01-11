@@ -28,25 +28,10 @@ void PixelAnimation::singlePixelRotate(
     /* get the value of knob 1 w/ 1000ms max */
     uint16_t delayValue = knobState.getValueKnob1(500);
     /* set the delay in animationState */
-    animationState.setDelay1InMs(delayValue);
+    animationState.setDelayPosition1(delayValue);
 
-    /* check if the delay has timed out */
-    if (animationState.hasTimedOut1())
-    {
-        /* if the delay has timed out, increment int 1 */
-        /* increment the position */
-        animationState.incrementInt1();
-        uint32_t position = animationState.getInt1();
-
-        /* if the position has hit the end, reset */
-        if (position >= numberOfPixels)
-        {
-            animationState.setInt1(0);
-        }
-
-        /* finally, update the timeMark */
-        animationState.markTime1();
-    }
+    /* tick the position */
+    animationState.tickPosition1();
 
     /* get the color from knob 2 */
     uint8_t positionKnob2 = knobState.getValueKnob2(255);
@@ -54,7 +39,7 @@ void PixelAnimation::singlePixelRotate(
 
     neoPixels->clear();
     neoPixels->setPixelColor(
-        animationState.getInt1(),
+        animationState.getPosition1(),
         color);
     neoPixels->show();
 }
@@ -68,55 +53,27 @@ void PixelAnimation::singlePixelRotateFader(
     /* get the value of knob 1 for motion timeout*/
     uint16_t delayValue = knobState.getValueKnob1(500);
     /* set the delay in animationState */
-    animationState.setDelay1InMs(delayValue);
+    animationState.setDelayPosition1(delayValue);
 
     /* get the value of knob 2  for fade timeout*/
     uint16_t delayValue2 = knobState.getValueKnob2(500);
     /* set the delay in animationState */
-    animationState.setDelay2InMs(delayValue2);
+    animationState.setDelayColor1(delayValue2);
 
-    /* check if the motion delay has timed out */
-    if (animationState.hasTimedOut1())
-    {
-        /* if the delay has timed out, increment int 1 */
-        /* increment the position */
-        animationState.incrementInt1();
-        uint32_t position = animationState.getInt1();
+    /* tick the position */
+    animationState.tickPosition1();
 
-        /* if the position has hit the end, reset */
-        if (position >= numberOfPixels)
-        {
-            animationState.setInt1(0);
-        }
-
-        /* finally, update the timeMark */
-        animationState.markTime1();
-    }
-
-    /* check if the fader delay has timedout */
-    if (animationState.hasTimedOut2())
-    {
-        /* if the delay has timed out, increment the color var */
-        animationState.incrementInt2();
-
-        /* if the color is greater than 255, reset it to 0*/
-        if (animationState.getInt2() > 255)
-        {
-            animationState.setInt2(0);
-        }
-
-        /* finally, update the markTime */
-        animationState.markTime2();
-    }
+    /* tick the color */
+    animationState.tickColor1();
 
     /* set the color */
     uint32_t color = PixelAnimation::getColor(
         neoPixels,
-        animationState.getInt2());
+        animationState.getColor1());
 
     neoPixels->clear();
     neoPixels->setPixelColor(
-        animationState.getInt1(),
+        animationState.getPosition1(),
         color);
     neoPixels->show();
 }
@@ -126,7 +83,6 @@ void PixelAnimation::doublePixels(
     uint8_t numberOfPixels,
     KnobState &knobState)
 {
-
     neoPixels->clear();
 
     /* get the position of knob 1 */
@@ -154,10 +110,99 @@ void PixelAnimation::quadPixels(
     uint8_t numberOfPixels,
     KnobState &knobState)
 {
-
     uint16_t offset = knobState.getValueKnob1(numberOfPixels);
     uint16_t positionKnob2 = knobState.getValueKnob2(255);
     uint32_t color = PixelAnimation::getColor(neoPixels, positionKnob2);
+
+    int posPixel1 =
+        PixelAnimation::getPositionOffset(0, numberOfPixels, offset);
+
+    int posPixel2 =
+        PixelAnimation::getPositionOffset(numberOfPixels / 4, numberOfPixels, offset);
+
+    int posPixel3 =
+        PixelAnimation::getPositionOffset(numberOfPixels / 2, numberOfPixels, offset);
+
+    int posPixel4 =
+        PixelAnimation::getPositionOffset((numberOfPixels / 4) * 3, numberOfPixels, offset);
+
+    neoPixels->clear();
+    neoPixels->setPixelColor(posPixel1, color);
+    neoPixels->setPixelColor(posPixel2, color);
+    neoPixels->setPixelColor(posPixel3, color);
+    neoPixels->setPixelColor(posPixel4, color);
+    neoPixels->show();
+}
+
+void PixelAnimation::quadPixelsRotate(
+    Adafruit_NeoPixel *neoPixels,
+    uint8_t numberOfPixels,
+    KnobState &knobState,
+    AnimationState &animationState)
+{
+    /* update the motion delay */
+    uint16_t delayValue = knobState.getValueKnob1(500);
+    /* set the delay in animationState */
+    animationState.setDelayPosition1(delayValue);
+
+    /* tick position1 */
+    animationState.tickPosition1();
+
+    uint16_t offset = animationState.getPosition1();
+
+    /* get the color */
+    uint16_t positionKnob2 = knobState.getValueKnob2(255);
+    uint32_t color = PixelAnimation::getColor(neoPixels, positionKnob2);
+
+    int posPixel1 =
+        PixelAnimation::getPositionOffset(0, numberOfPixels, offset);
+
+    int posPixel2 =
+        PixelAnimation::getPositionOffset(numberOfPixels / 4, numberOfPixels, offset);
+
+    int posPixel3 =
+        PixelAnimation::getPositionOffset(numberOfPixels / 2, numberOfPixels, offset);
+
+    int posPixel4 =
+        PixelAnimation::getPositionOffset((numberOfPixels / 4) * 3, numberOfPixels, offset);
+
+    neoPixels->clear();
+    neoPixels->setPixelColor(posPixel1, color);
+    neoPixels->setPixelColor(posPixel2, color);
+    neoPixels->setPixelColor(posPixel3, color);
+    neoPixels->setPixelColor(posPixel4, color);
+    neoPixels->show();
+}
+
+void PixelAnimation::quadPixelsRotateFader(
+    Adafruit_NeoPixel *neoPixels,
+    uint8_t numberOfPixels,
+    KnobState &knobState,
+    AnimationState &animationState)
+{
+    /* update the motion delay */
+    uint16_t delayValue = knobState.getValueKnob1(500);
+    /* set the delay in animationState */
+    animationState.setDelayPosition1(delayValue);
+
+    /* get the value of knob 2 for fade timeout*/
+    uint16_t delayValue2 = knobState.getValueKnob2(500);
+    /* set the delay in animationState */
+    animationState.setDelayColor1(delayValue2);
+
+    /* tick position 1 */
+    animationState.tickPosition1();
+
+    /* tick color 1 */
+    animationState.tickColor1();
+
+    uint16_t offset = animationState.getPosition1();
+
+    /* get the color */
+    uint32_t color =
+        PixelAnimation::getColor(
+            neoPixels,
+            animationState.getColor1());
 
     int posPixel1 =
         PixelAnimation::getPositionOffset(0, numberOfPixels, offset);
@@ -195,6 +240,49 @@ void PixelAnimation::halves(
 
     /* figure out the offset using knob 3 */
     uint16_t offset = knobState.getValueKnob3(numberOfPixels);
+
+    /* half 1 */
+    for (uint8_t i = 0; i < numberOfPixels / 2; i++)
+    {
+        int pos1 =
+            PixelAnimation::getPositionOffset(i, numberOfPixels, offset);
+        neoPixels->setPixelColor(pos1, color1);
+    }
+
+    /* half 2 */
+    for (uint8_t j = numberOfPixels / 2; j < numberOfPixels; j++)
+    {
+        int pos2 =
+            PixelAnimation::getPositionOffset(j, numberOfPixels, offset);
+        neoPixels->setPixelColor(pos2, color2);
+    }
+
+    neoPixels->show();
+}
+
+void PixelAnimation::halvesRotate(
+    Adafruit_NeoPixel *neoPixels,
+    uint8_t numberOfPixels,
+    KnobState &knobState,
+    AnimationState &animationState)
+{
+    /* get the position of knob 1 */
+    uint16_t positionKnob1 = knobState.getValueKnob1(255);
+    uint32_t color1 = PixelAnimation::getColor(neoPixels, positionKnob1);
+
+    /* get the position of knob 2 */
+    uint8_t positionKnob2 = knobState.getValueKnob2(255);
+    uint32_t color2 = PixelAnimation::getColor(neoPixels, positionKnob2);
+
+    /* update the motion delay */
+    uint16_t delayValue = knobState.getValueKnob3(500);
+    /* set the delay in animationState */
+    animationState.setDelayPosition1(delayValue);
+
+    /* tick position 1 */
+    animationState.tickPosition1();
+
+    uint8_t offset = animationState.getPosition1();
 
     /* half 1 */
     for (uint8_t i = 0; i < numberOfPixels / 2; i++)

@@ -77,10 +77,34 @@ void PixelGadget::displayState()
     break;
 
   case 6:
+    PixelAnimation::quadPixelsRotate(
+        neoPixels,
+        numberOfPixels,
+        knobState,
+        animationState);
+    break;
+
+  case 7:
+    PixelAnimation::quadPixelsRotateFader(
+        neoPixels,
+        numberOfPixels,
+        knobState,
+        animationState);
+    break;
+
+  case 8:
     PixelAnimation::halves(
         neoPixels,
         numberOfPixels,
         knobState);
+    break;
+
+  case 9:
+    PixelAnimation::halvesRotate(
+        neoPixels,
+        numberOfPixels,
+        knobState,
+        animationState);
     break;
 
   default:
@@ -149,6 +173,7 @@ void PixelGadget::setNeoPixels(Adafruit_NeoPixel &_neoPixels, uint16_t _numberOf
 {
   neoPixels = &_neoPixels;
   numberOfPixels = _numberOfPixels;
+  animationState.setNumberOfPixels(numberOfPixels);
 }
 
 /**
