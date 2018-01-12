@@ -8,6 +8,11 @@ void AnimationState::setNumberOfPixels(uint8_t _numberOfPixels)
 {
   /* assign the number of pixels */
   numberOfPixels = _numberOfPixels;
+
+  /* create a fading pixel object for each pixel */
+  for (uint8_t i = 0; i < numberOfPixels; i++) {
+    fadingPixels[i] = FadingPixel();
+  }
 }
 
 void AnimationState::reset()
@@ -150,6 +155,12 @@ void AnimationState::tickColor4()
       color4);
 }
 
+void AnimationState::tickFadingPixels() {
+  for(uint8_t i = 0; i < numberOfPixels; i++) {
+    fadingPixels[i].tick();
+  }
+}
+
 void AnimationState::setDelayPosition1(uint16_t delayValue)
 {
   delayPosition1 = delayValue;
@@ -190,6 +201,12 @@ void AnimationState::setDelayColor4(uint16_t delayValue)
   delayColor4 = delayValue;
 }
 
+void AnimationState::setDelayFadingPixels(uint16_t fadeDelay) {
+  for(uint8_t i = 0; i < numberOfPixels; i++) {
+    fadingPixels[i].setFadeDelay(fadeDelay);
+  }
+}
+
 uint8_t AnimationState::getColor1()
 {
   return color1;
@@ -228,4 +245,8 @@ uint8_t AnimationState::getPosition3()
 uint8_t AnimationState::getPosition4()
 {
   return position4;
+}
+
+FadingPixel * AnimationState::getFadingPixels() {
+  return fadingPixels;
 }

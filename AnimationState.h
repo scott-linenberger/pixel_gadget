@@ -4,10 +4,15 @@
 /* bring in the Arduino-y goodness */
 #include <Arduino.h>
 
+#include "FadingPixel.h";
+
 class AnimationState
 {
   /* number of pixels */
   uint8_t numberOfPixels;
+
+  /* array of fading pixels */
+  FadingPixel fadingPixels[100];
 
   /* delays */
   uint16_t delayPosition1 = 0;
@@ -60,6 +65,8 @@ public:
   void tickColor3();
   void tickColor4();
 
+  void tickFadingPixels();
+
   /* delays */
   void setDelayPosition1(uint16_t delayValue);
   void setDelayPosition2(uint16_t delayValue);
@@ -71,6 +78,8 @@ public:
   void setDelayColor3(uint16_t delayValue);
   void setDelayColor4(uint16_t delayValue);
 
+  void setDelayFadingPixels(uint16_t delayValue);
+
   /* getters */
   uint8_t getColor1();
   uint8_t getColor2();
@@ -81,6 +90,8 @@ public:
   uint8_t getPosition2();
   uint8_t getPosition3();
   uint8_t getPosition4();
+
+  FadingPixel * getFadingPixels();
 
 private:
   void tickPosition(

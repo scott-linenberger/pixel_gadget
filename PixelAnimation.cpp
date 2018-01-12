@@ -303,6 +303,121 @@ void PixelAnimation::halvesRotate(
     neoPixels->show();
 }
 
+void PixelAnimation::colorTuner(
+    Adafruit_NeoPixel *neoPixels,
+    uint8_t numberOfPixels,
+    KnobState &knobState)
+{
+
+    uint32_t red = knobState.getValueKnob1(255);
+    uint32_t green = knobState.getValueKnob2(255);
+    uint32_t blue = knobState.getValueKnob3(255);
+    uint32_t white = knobState.getValueKnob4(255);
+
+    for (uint8_t i = 0; i < numberOfPixels; i++)
+    {
+        neoPixels->setPixelColor(i, neoPixels->Color(red, green, blue, white));
+    }
+
+    neoPixels->show();
+}
+
+void PixelAnimation::colorFader(
+    Adafruit_NeoPixel *neoPixels,
+    uint8_t numberOfPixels,
+    KnobState &knobState,
+    AnimationState &animationState)
+{
+    /* get the value of knob 1 for fade timeout*/
+    uint16_t fadeDelay = knobState.getValueKnob1(500);
+    /* set the delay in animationState */
+    animationState.setDelayColor1(fadeDelay);
+
+    /* tick color 1*/
+    animationState.tickColor1();
+
+    for (uint8_t i = 0; i < numberOfPixels; i++)
+    {
+        neoPixels->setPixelColor(
+            i,
+            PixelAnimation::getColor(
+                neoPixels,
+                animationState.getColor1()));
+    }
+
+    neoPixels->show();
+}
+
+void PixelAnimation::colorFaderHalves(
+    Adafruit_NeoPixel *neoPixels,
+    uint8_t numberOfPixels,
+    KnobState &knobState,
+    AnimationState &animationState)
+{
+    /* get the value of knob 1 for fade timeout*/
+    uint16_t fadeDelay = knobState.getValueKnob1(500);
+    /* set the delay in animationState */
+    animationState.setDelayColor1(fadeDelay);
+
+    /* get the value of knob 2 for fade timeout*/
+    uint16_t fadeDelay2 = knobState.getValueKnob2(500);
+    /* set the delay in animationState */
+    animationState.setDelayColor2(fadeDelay2);
+
+    /* tick colors*/
+    animationState.tickColor1();
+    animationState.tickColor2();
+
+    for (uint8_t i = 0; i < numberOfPixels / 2; i++)
+    {
+        neoPixels->setPixelColor(
+            i,
+            PixelAnimation::getColor(
+                neoPixels,
+                animationState.getColor1()));
+    }
+
+    for (uint8_t j = numberOfPixels / 2; j < numberOfPixels; j++)
+    {
+        neoPixels->setPixelColor(
+            j,
+            PixelAnimation::getColor(
+                neoPixels,
+                animationState.getColor2()));
+    }
+    neoPixels->show();
+}
+
+void PixelAnimation::sparkle(
+    Adafruit_NeoPixel *neoPixels,
+    uint8_t numberOfPixels,
+    KnobState &knobState,
+    AnimationState &animationState)
+{
+    /* get the value of knob 1 for fade timeout*/
+    uint16_t fadeDelay = knobState.getValueKnob1(500);
+    /* update delay on fading pixels */
+    animationState.setDelayFadingPixels(fadeDelay);
+
+    /* tick fading pixels */
+    animationState.tickFadingPixels();
+
+    FadingPixel *fadingPixels = animationState.getFadingPixels();
+
+    /* update pixels */
+    for (uint8_t i = 0; i < numberOfPixels; i++)
+    {
+        FadingPixel currPixel = fadingPixels[i];
+        uint32_t currColor = neoPixels->Color(
+            0, 0, 0, currPixel.getValue());
+
+        neoPixels->setPixelColor(
+            i, currColor);
+    }
+
+    neoPixels->show();
+}
+
 uint8_t PixelAnimation::getPositionOffset(
     uint8_t pos,
     uint8_t numberOfPixels,

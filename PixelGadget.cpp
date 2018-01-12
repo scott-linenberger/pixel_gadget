@@ -107,6 +107,37 @@ void PixelGadget::displayState()
         animationState);
     break;
 
+  case 10:
+    PixelAnimation::colorTuner(
+        neoPixels,
+        numberOfPixels,
+        knobState);
+    break;
+
+  case 11:
+    PixelAnimation::colorFader(
+        neoPixels,
+        numberOfPixels,
+        knobState,
+        animationState);
+    break;
+
+  case 12:
+    PixelAnimation::colorFaderHalves(
+        neoPixels,
+        numberOfPixels,
+        knobState,
+        animationState);
+    break;
+
+  case 13:
+    PixelAnimation::sparkle(
+        neoPixels,
+        numberOfPixels,
+        knobState,
+        animationState);
+    break;
+
   default:
     /* if we wind up in an unknown mode, reset mode to 0 */
     mode = 0;
