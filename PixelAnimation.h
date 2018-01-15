@@ -36,6 +36,12 @@ class PixelAnimation
         uint8_t numberOfPixels,
         KnobState &knobState);
 
+    static void doublePixelsRotate(
+        Adafruit_NeoPixel *neoPixels,
+        uint8_t numberOfPixels,
+        KnobState &knobState,
+        AnimationState &animationState);
+
     static void quadPixels(
         Adafruit_NeoPixel *neoPixels,
         uint8_t numberOfPixels,

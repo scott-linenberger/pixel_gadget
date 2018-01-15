@@ -70,13 +70,21 @@ void PixelGadget::displayState()
     break;
 
   case 5:
+    PixelAnimation::doublePixelsRotate(
+        neoPixels,
+        numberOfPixels,
+        knobState,
+        animationState);
+    break;
+
+  case 6:
     PixelAnimation::quadPixels(
         neoPixels,
         numberOfPixels,
         knobState);
     break;
 
-  case 6:
+  case 7:
     PixelAnimation::quadPixelsRotate(
         neoPixels,
         numberOfPixels,
@@ -84,7 +92,7 @@ void PixelGadget::displayState()
         animationState);
     break;
 
-  case 7:
+  case 8:
     PixelAnimation::quadPixelsRotateFader(
         neoPixels,
         numberOfPixels,
@@ -92,14 +100,14 @@ void PixelGadget::displayState()
         animationState);
     break;
 
-  case 8:
+  case 9:
     PixelAnimation::halves(
         neoPixels,
         numberOfPixels,
         knobState);
     break;
 
-  case 9:
+  case 10:
     PixelAnimation::halvesRotate(
         neoPixels,
         numberOfPixels,
@@ -107,14 +115,14 @@ void PixelGadget::displayState()
         animationState);
     break;
 
-  case 10:
+  case 11:
     PixelAnimation::colorTuner(
         neoPixels,
         numberOfPixels,
         knobState);
     break;
 
-  case 11:
+  case 12:
     PixelAnimation::colorFader(
         neoPixels,
         numberOfPixels,
@@ -122,7 +130,7 @@ void PixelGadget::displayState()
         animationState);
     break;
 
-  case 12:
+  case 13:
     PixelAnimation::colorFaderHalves(
         neoPixels,
         numberOfPixels,
@@ -130,7 +138,7 @@ void PixelGadget::displayState()
         animationState);
     break;
 
-  case 13:
+  case 14:
     PixelAnimation::sparkle(
         neoPixels,
         numberOfPixels,

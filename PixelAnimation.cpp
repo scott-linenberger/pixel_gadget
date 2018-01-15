@@ -105,6 +105,42 @@ void PixelAnimation::doublePixels(
     neoPixels->show();
 }
 
+void PixelAnimation::doublePixelsRotate(
+    Adafruit_NeoPixel *neoPixels,
+    uint8_t numberOfPixels,
+    KnobState &knobState,
+    AnimationState &animationState)
+{
+    /* set the delays */
+    uint16_t delayValue = knobState.getValueKnob1(500);
+    uint16_t delayValue2 = knobState.getValueKnob2(500);
+
+    /* set the delay in animationState */
+    animationState.setDelayPosition1(delayValue);
+    animationState.setDelayPosition2(delayValue2);
+
+    /* tick the positions */
+    animationState.tickPosition1();
+    animationState.tickPosition2();
+
+    /* get the position of knob 3 */
+    uint16_t positionKnob3 = knobState.getValueKnob3(255);
+
+    /* get the position of knob 4 */
+    uint8_t positionKnob4 = knobState.getValueKnob4(255);
+
+    /* set the colors */
+    uint32_t color1 = PixelAnimation::getColor(neoPixels, positionKnob3);
+    uint32_t color2 = PixelAnimation::getColor(neoPixels, positionKnob4);
+
+    neoPixels->clear();
+
+    neoPixels->setPixelColor(animationState.getPosition1(), color1);
+    neoPixels->setPixelColor(animationState.getPosition2(), color2);
+
+    neoPixels->show();
+}
+
 void PixelAnimation::quadPixels(
     Adafruit_NeoPixel *neoPixels,
     uint8_t numberOfPixels,
@@ -416,6 +452,14 @@ void PixelAnimation::sparkle(
     }
 
     neoPixels->show();
+}
+
+void PixelAnimation::randomPixels(
+    Adafruit_NeoPixel *neoPixels,
+    uint8_t numberOfPixels,
+    KnobState &knobState,
+    AnimationState &animationState)
+{
 }
 
 uint8_t PixelAnimation::getPositionOffset(
