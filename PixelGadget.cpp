@@ -139,6 +139,14 @@ void PixelGadget::displayState()
     break;
 
   case 14:
+    PixelAnimation::volume(
+        neoPixels,
+        numberOfPixels,
+        knobState,
+        animationState);
+    break;
+
+  case 15:
     PixelAnimation::sparkle(
         neoPixels,
         numberOfPixels,

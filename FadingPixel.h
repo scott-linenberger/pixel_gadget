@@ -4,7 +4,6 @@
 #include <Arduino.h>;
 
 class FadingPixel {
-
   unsigned long timeMark = 0;
   uint16_t fadeDelay = 100;
   boolean isFading = false;

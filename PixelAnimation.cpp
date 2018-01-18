@@ -454,12 +454,26 @@ void PixelAnimation::sparkle(
     neoPixels->show();
 }
 
-void PixelAnimation::randomPixels(
+void PixelAnimation::volume(
     Adafruit_NeoPixel *neoPixels,
     uint8_t numberOfPixels,
     KnobState &knobState,
     AnimationState &animationState)
 {
+    /* select a number of pixels */
+    uint8_t displayPixels = knobState.getValueKnob1(numberOfPixels);
+
+    /* get the color from knob 2 */
+    uint8_t positionKnob2 = knobState.getValueKnob2(255);
+    uint32_t color = PixelAnimation::getColor(neoPixels, positionKnob2);
+    
+    neoPixels->clear();
+
+    for(uint8_t i = 0; i < displayPixels; i++ ){
+        neoPixels->setPixelColor(i, color);
+    }
+
+    neoPixels->show();
 }
 
 uint8_t PixelAnimation::getPositionOffset(

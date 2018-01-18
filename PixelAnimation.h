@@ -93,6 +93,12 @@ class PixelAnimation
         KnobState &knobState,
         AnimationState &animationState);
 
+    static void volume(
+        Adafruit_NeoPixel *neoPixels,
+        uint8_t numberOfPixels,
+        KnobState &knobState,
+        AnimationState &animationState);
+
     static uint32_t getColor(
         Adafruit_NeoPixel *neoPixels,
         uint8_t value);

@@ -21,7 +21,8 @@ Adafruit_NeoPixel pixels = Adafruit_NeoPixel(NUM_PIXELS, PIN_RGBW_RING, NEO_RGBW
 const int DEBOUNCE_TIMEOUT = 50;
 unsigned long buttonLastPressed = 0;
 
-void setup() {
+void setup()
+{
   /* init the button */
   /* --MUST BE ON A PIN THAT SUPPORTS INTERRUPTS-- */
   pinMode(PIN_BUTTON, INPUT_PULLUP);
@@ -36,20 +37,27 @@ void setup() {
 }
 
 /* called by an interrupt: changes animation mode */
-void changeMode() {
+void changeMode()
+{
   /* debounce the button */
-  if (millis() - buttonLastPressed < DEBOUNCE_TIMEOUT) {
+  if (millis() - buttonLastPressed < DEBOUNCE_TIMEOUT)
+  {
     return;
   }
 
   /* update button press for debounce */
   buttonLastPressed = millis();
-  
+
   /* tell the pixelGadget to change modes */
   pixelGadget.changeMode();
 }
 
-void loop() {
-  /* call the run method */
-  pixelGadget.run();
+void loop()
+{
+  /* use a while loop to tighten up the performance */
+  while (true)
+  {
+    /* call the run method */
+    pixelGadget.run();
+  }
 }
