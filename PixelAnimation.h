@@ -87,6 +87,12 @@ class PixelAnimation
         KnobState &knobState,
         AnimationState &animationState);
 
+    static void collidingHalves(
+        Adafruit_NeoPixel *neoPixels,
+        uint8_t numberOfPixels,
+        KnobState &knobState,
+        AnimationState &animationState);
+
     static void sparkle(
         Adafruit_NeoPixel *neoPixels,
         uint8_t numberOfPixels,

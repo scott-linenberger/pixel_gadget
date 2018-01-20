@@ -27,7 +27,7 @@ class PixelGadget {
     /* vars for modes */
     uint8_t mode = -1;
     uint8_t lastMode = 0;
-    uint8_t MODE_MAX = 15;
+    uint8_t MODE_MAX = 16;
 
     /* neoPixels */
     Adafruit_NeoPixel * neoPixels;

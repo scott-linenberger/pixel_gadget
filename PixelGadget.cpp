@@ -147,6 +147,14 @@ void PixelGadget::displayState()
     break;
 
   case 15:
+    PixelAnimation::collidingHalves(
+        neoPixels,
+        numberOfPixels,
+        knobState,
+        animationState);
+    break;
+
+  case 16:
     PixelAnimation::sparkle(
         neoPixels,
         numberOfPixels,

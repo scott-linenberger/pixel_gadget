@@ -424,6 +424,42 @@ void PixelAnimation::colorFaderHalves(
     neoPixels->show();
 }
 
+void PixelAnimation::collidingHalves(
+    Adafruit_NeoPixel *neoPixels,
+    uint8_t numberOfPixels,
+    KnobState &knobState,
+    AnimationState &animationState)
+{
+    /* get the position of knob 1 */
+    uint16_t positionKnob1 = knobState.getValueKnob1(255);
+    uint32_t color1 = PixelAnimation::getColor(neoPixels, positionKnob1);
+
+    /* get the position of knob 2 */
+    uint8_t positionKnob2 = knobState.getValueKnob2(255);
+    uint32_t color2 = PixelAnimation::getColor(neoPixels, positionKnob2);
+
+    /* set the delays */
+    uint16_t delayValue = knobState.getValueKnob3(500);
+
+    animationState.setDelayPosition1(delayValue);
+    animationState.setDelayPosition2(delayValue);
+
+    /* get position 1 */
+    uint16_t posPixel1 = animationState.getPosition1();
+    uint16_t posPixel2 = animationState.getPosition2();
+
+    /* make position two an offset so it goes in reverse */
+    posPixel2 = numberOfPixels - posPixel2;
+
+    /* tick the pixels */
+    animationState.tickPosition1();
+    animationState.tickPosition2();
+
+    neoPixels->setPixelColor(posPixel1, color1);
+    neoPixels->setPixelColor(posPixel2, color2);
+    neoPixels->show();
+}
+
 void PixelAnimation::sparkle(
     Adafruit_NeoPixel *neoPixels,
     uint8_t numberOfPixels,
@@ -466,10 +502,11 @@ void PixelAnimation::volume(
     /* get the color from knob 2 */
     uint8_t positionKnob2 = knobState.getValueKnob2(255);
     uint32_t color = PixelAnimation::getColor(neoPixels, positionKnob2);
-    
+
     neoPixels->clear();
 
-    for(uint8_t i = 0; i < displayPixels; i++ ){
+    for (uint8_t i = 0; i < displayPixels; i++)
+    {
         neoPixels->setPixelColor(i, color);
     }
 
